@@ -1,0 +1,25 @@
+FROM node:alpine
+
+# Set the user to the 'node' user.
+# It is a recommended security practice to avoid running containers as root.
+# Note that this will only affect RUN, CMD and ENTRYPOINT instructions that follow 
+# it in the Dockerfile; so any files copied into the container will need their ownership
+# changes with 'chown'.
+USER node
+
+# Make the app folder prior to setting WORKDIR.
+# This is because if the target directory does not exist, 
+# WORKDIR will create it with ownership set to root.
+RUN mkdir -p /home/node/app
+
+# Set the newly created app folder as the working directory.
+WORKDIR /home/node/app
+
+# Copy the package.json and change ownership to the node user.
+COPY --chown=node:node package.json .
+RUN npm install
+
+# Copy application files and change ownership to the node user.
+COPY --chown=node:node . .
+
+CMD ["npm", "start"]
