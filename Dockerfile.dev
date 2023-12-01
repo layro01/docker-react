@@ -1,4 +1,4 @@
-FROM node:alpine
+FROM node:21.2-alpine3.18
 
 # Set the user to the 'node' user.
 # It is a recommended security practice to avoid running containers as root.
